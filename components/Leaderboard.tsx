@@ -5,7 +5,6 @@ import { Navbar } from "./navbar";
 import { db } from "@/lib/firebase/client";
 import { collection, getDocs } from "firebase/firestore";
 
-
 export const avatarImages: string[] = [
   "https://imagedelivery.net/TkcHhODAR5Y7jFoICvSX0Q/014e9e28-9f8d-4523-3e9f-ef87569b1100/q=auto",
   "https://imagedelivery.net/TkcHhODAR5Y7jFoICvSX0Q/9a4fb1e5-d608-4911-48c5-b7ae6e3d1d00/q=auto",
@@ -33,25 +32,47 @@ export type UserData = {
   hard: number;
   roll?: string;
   points: number;
-  uid?: string
-}
+  uid?: string;
+};
 
 const getPoints = (easy: number, medium: number, hard: number) => {
   return easy * 2 + medium * 3 + hard * 5;
-}
+};
+
+// ⭐ Skeleton components
+const SkeletonPodium = () => (
+  <div className="flex-1 max-w-[33%] flex flex-col items-center animate-pulse">
+    <div className="rounded-2xl bg-white/10 w-20 h-20 sm:w-28 sm:h-28" />
+    <div className="w-24 h-4 bg-white/10 rounded mt-3" />
+    <div className="w-full h-32 sm:h-48 bg-white/5 rounded-t-2xl mt-4" />
+  </div>
+);
+
+const SkeletonRow = () => (
+  <div className="grid grid-cols-10 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
+    <div className="col-span-1 h-4 bg-white/10 rounded"></div>
+    <div className="col-span-4 flex items-center gap-3">
+      <div className="w-9 h-9 rounded-full bg-white/10"></div>
+      <div className="w-24 h-4 bg-white/10 rounded"></div>
+    </div>
+    <div className="col-span-2 h-4 bg-white/10 rounded"></div>
+    <div className="col-span-1 h-4 bg-white/10 rounded"></div>
+    <div className="col-span-1 h-4 bg-white/10 rounded"></div>
+    <div className="col-span-1 h-4 bg-white/10 rounded"></div>
+  </div>
+);
 
 export default function LeaderboardPage() {
   const [dynamicData, setDynamicData] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       const snap = await getDocs(collection(db, "users"));
       const list: UserData[] = [];
-      
 
       snap.forEach((docSnap) => {
         const d = docSnap.data();
-        console.log("data:", d)
         list.push({
           name: d.name,
           avatar: d.avatarIndex,
@@ -64,6 +85,7 @@ export default function LeaderboardPage() {
       });
 
       setDynamicData(list);
+      setLoading(false);
     };
 
     fetchUsers();
@@ -96,13 +118,12 @@ export default function LeaderboardPage() {
       ? "shadow-[0_-10px_50px_-10px_rgba(59,130,246,0.5)]"
       : "shadow-[0_-10px_30px_-10px_rgba(30,58,138,0.3)]";
 
-
     return (
       <div className={`relative flex flex-col items-center flex-1 max-w-[33%] ${isFirst ? "-mt-10 z-20" : "z-10"}`}>
         <div className="flex flex-col items-center mb-4 relative group">
           <div
-            className={`${isFirst ? "w-20 h-20 sm:w-28 sm:h-28" : "w-16 h-16 sm:w-24 sm:h-24"
-              } rounded-2xl border-2 ${borderColor} overflow-hidden shadow-2xl z-10 bg-black`}
+            className={`${isFirst ? "w-20 h-20 sm:w-28 sm:h-28" : "w-16 h-16 sm:w-24 sm:h-24"}
+            rounded-2xl border-2 ${borderColor} overflow-hidden shadow-2xl z-10 bg-black`}
           >
             <img
               src={avatarImages[user.avatar % avatarImages.length]}
@@ -114,18 +135,35 @@ export default function LeaderboardPage() {
           </h3>
         </div>
 
+        {/* Trophy + Points Box */}
         <div
-          className={`w-full ${boxHeight} rounded-t-2xl border-t-2 border-x border-white/5 ${borderColor} bg-gradient-to-b from-[#1d2648] via-[#101426] to-transparent ${glow} flex flex-col items-center justify-start py-6 sm:py-8 gap-1 sm:gap-3 backdrop-blur-sm`}
+          className={`w-full ${boxHeight} rounded-t-2xl border-t-2 border-x border-white/5 ${borderColor}
+         bg-gradient-to-b from-[#1d2648] via-[#101426] to-transparent ${glow}
+         flex flex-col items-center justify-start py-6 sm:py-8 gap-1 sm:gap-3 backdrop-blur-sm`}
         >
-          <div className="bg-white/10 p-2 rounded-lg mb-1">
-            <Trophy size={isFirst ? 24 : 18} className="text-yellow-400" />
+          <div className="bg-white/10 p-2 relative rounded-lg mb-1">
+            <Trophy size={isFirst ? 60 : 48} className="text-yellow-400" />
+            <span className="absolute text-sm sm:text-lg top-5 sm:top-4 left-1/2 -translate-x-1/2">{rank}</span>
           </div>
+
           <div className="flex flex-col items-center mt-2">
             <div className="flex items-center gap-1 sm:gap-2">
               <span className="text-blue-400 text-sm sm:text-xl">💎</span>
               <span className="text-lg sm:text-3xl font-bold text-white">{user.points}</span>
             </div>
             <span className="text-[10px] sm:text-sm text-gray-400 mt-1">Points</span>
+          </div>
+
+          {/* Solved Breakdown */}
+          <div className="flex flex-col gap-2 items-center">
+            <div className="flex items-center mt-2">
+              <span className="text-green-600">{user.easy}</span> +
+              <span className="text-amber-600">{user.medium}</span> +
+              <span className="text-red-600">{user.hard}</span>
+            </div>
+            <span className="text-[10px] sm:text-sm text-gray-400 mt-1">
+              {user.easy + user.medium + user.hard} Issues Solved
+            </span>
           </div>
         </div>
       </div>
@@ -134,92 +172,109 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-blue-500/30">
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none" />
-
       <Navbar />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 pb-20">
-        <div className="mt-12 mb-20">
-          <div className="flex items-end justify-center w-full gap-2 sm:gap-6 px-0 sm:px-12">
-            <RenderPodiumUser user={top3[1]} rank={2} />
-            <RenderPodiumUser user={top3[0]} rank={1} />
-            <RenderPodiumUser user={top3[2]} rank={3} />
-          </div>
+        <div className="mt-12 mb-20 flex items-end justify-center w-full gap-2 sm:gap-6 px-0 sm:px-12">
+
+          {loading ? (
+            <>
+              <SkeletonPodium />
+              <SkeletonPodium />
+              <SkeletonPodium />
+            </>
+          ) : (
+            <>
+              <RenderPodiumUser user={top3[1]} rank={2} />
+              <RenderPodiumUser user={top3[0]} rank={1} />
+              <RenderPodiumUser user={top3[2]} rank={3} />
+            </>
+          )}
+
         </div>
 
         <div ref={tableRef} className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <div className="min-w-[600px]">
-              <div className="grid grid-cols-10 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
-                <div className="col-span-1">Rank</div>
-                <div className="col-span-4">User name</div>
-                <div className="col-span-2 text-right">Points</div>
-                <div className="col-span-1 text-right">Easy</div>
-                <div className="col-span-1 text-right">Medium</div>
-                <div className="col-span-1 text-right">Hard</div>
-              </div>
 
-              {paginated.map((user, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-10 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
-                >
-                  <div className="col-span-1 font-bold text-gray-400">
-                    {page * ITEMS_PER_PAGE + index + 4}
-                  </div>
+          {/* Columns */}
+          <div className="min-w-[600px]">
+            <div className="grid grid-cols-10 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
+              <div className="col-span-1">Rank</div>
+              <div className="col-span-4">User name</div>
+              <div className="col-span-2 text-right">Points</div>
+              <div className="col-span-1 text-right">Easy</div>
+              <div className="col-span-1 text-right">Medium</div>
+              <div className="col-span-1 text-right">Hard</div>
+            </div>
 
-                  <div className="col-span-4 flex items-center gap-3">
-                    <img
-                      src={avatarImages[user.avatar % avatarImages.length]}
-                      className="w-9 h-9 rounded-full object-cover ring-2 ring-transparent group-hover:ring-blue-500/50 transition"
-                    />
-                    <div>
-                      <div className="font-semibold text-gray-200">{user.name}</div>
-                      <div className="text-xs text-gray-500">@{user.roll}</div>
+            {/* Table Skeleton or Rows */}
+            {loading ? (
+              <>
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <SkeletonRow key={i} />
+                ))}
+              </>
+            ) : (
+              <>
+                {paginated.map((user, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-10 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
+                  >
+                    <div className="col-span-1 font-bold text-gray-400">
+                      {page * ITEMS_PER_PAGE + index + 4}
                     </div>
-                  </div>
 
-                  <div className="col-span-2 flex justify-end">
-                    <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-1 rounded text-blue-400 text-xs font-bold border border-blue-500/20">
-                      💎 {user.points}
+                    <div className="col-span-4 flex items-center gap-3">
+                      <img
+                        src={avatarImages[user.avatar % avatarImages.length]}
+                        className="w-9 h-9 rounded-full object-cover ring-2 ring-transparent group-hover:ring-blue-500/50 transition"
+                      />
+                      <div>
+                        <div className="font-semibold text-gray-200">{user.name}</div>
+                        <div className="text-xs text-gray-500">@{user.roll}</div>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="col-span-1 text-right text-gray-300 font-mono">{user.easy}</div>
+                    <div className="col-span-2 flex justify-end">
+                      <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-1 rounded text-blue-400 text-xs font-bold border border-blue-500/20">
+                        💎 {user.points}
+                      </div>
+                    </div>
 
-                  <div className="col-span-1 text-right font-bold text-white font-mono">
-                    {user.medium}
+                    <div className="col-span-1 text-right text-gray-300 font-mono">{user.easy}</div>
+                    <div className="col-span-1 text-right font-bold text-white font-mono">{user.medium}</div>
+                    <div className="col-span-1 text-right font-bold text-white font-mono">{user.hard}</div>
                   </div>
-                  <div className="col-span-1 text-right font-bold text-white font-mono">
-                    {user.hard}
-                  </div>
+                ))}
+              </>
+            )}
 
-                </div>
-              ))}
+          </div>
+        </div>
+
+        {!loading && (
+          <div className="flex justify-between items-center mt-6 text-sm text-gray-500">
+            <span>Showing {paginated.length} of {others.length}</span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="p-2 bg-white/5 hover:bg-white/10 rounded-lg disabled:opacity-30 transition"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <button
+                onClick={() => setPage((p) => Math.min(maxPage, p + 1))}
+                disabled={page === maxPage}
+                className="p-2 bg-white/5 hover:bg-white/10 rounded-lg disabled:opacity-30 transition"
+              >
+                <ChevronRight size={18} />
+              </button>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex justify-between items-center mt-6 text-sm text-gray-500">
-          <span>Showing {paginated.length} of {others.length}</span>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              disabled={page === 0}
-              className="p-2 bg-white/5 hover:bg-white/10 rounded-lg disabled:opacity-30 transition"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            <button
-              onClick={() => setPage((p) => Math.min(maxPage, p + 1))}
-              disabled={page === maxPage}
-              className="p-2 bg-white/5 hover:bg-white/10 rounded-lg disabled:opacity-30 transition"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

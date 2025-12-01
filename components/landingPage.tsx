@@ -34,7 +34,7 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
 
       <Navbar />
 
-      <div className="relative pt-12 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative py-12 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -140,35 +140,7 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
                 WebkitMaskImage: 'radial-gradient(circle at 50% 60%, black 60%, transparent 100%)'
               }}
             />
-          </div>
-
-          {/* Coral-like element - Using CSS for a placeholder shape */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: 1.2 }}
-            className="absolute bottom-10 left-10 w-24 h-24 bg-gradient-to-br from-pink-500 to-red-600 rounded-full blur-sm opacity-70"
-            style={{
-              clipPath: 'polygon(50% 0%, 100% 30%, 80% 100%, 20% 100%, 0% 30%)'
-            }}
-          />
-
-          {/* Donation/Impact Card Placeholder (similar to Image 2) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-            className="absolute top-1/4 right-1/4 translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow-xl flex items-center gap-3 text-gray-100 z-20"
-          >
-            <div className="w-12 h-12 rounded-full bg-purple-500 overflow-hidden">
-              <img src={avatarImages[5]} alt="Avatar" className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold">midsane</p>
-              <p className="text-xs text-white">Achieved a milestone!</p>
-            </div>
-            <Trophy size={20} className="text-yellow-400" />
-          </motion.div>
+          </div>  
         </div>
       </div>
     </section>
