@@ -5,6 +5,7 @@ import { db } from "@/lib/firebase/client";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { avatarImages } from "@/components/Leaderboard";
 import { Navbar } from "./navbar";
+import { toast } from "sonner";
 
 type UserData = {
     uid: string;
@@ -42,6 +43,7 @@ export function AdminPage() {
     const updateUser = async (uid: string, data: Partial<UserData>) => {
         setSaving(true);
         await updateDoc(doc(db, "users", uid), data);
+        toast.success("updated successfully!");
         setSaving(false);
     };
 

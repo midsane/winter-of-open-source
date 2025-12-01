@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Figtree, Inter, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { Toaster } from "sonner";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -36,8 +37,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${figtree.variable} ${geistMono.variable} font-sans antialiased`}>
+        <Toaster theme="dark" richColors position="top-center" />
         {children}
-          <script
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               window.__app_id = '${process.env.NEXT_PUBLIC_APP_ID}';

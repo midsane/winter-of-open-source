@@ -7,6 +7,7 @@ import { useSyncUser } from "@/hooks/useSyncUser";
 import { db } from "@/lib/firebase/client";
 import { doc, updateDoc } from "firebase/firestore";
 import type { UserData } from "./Leaderboard";
+import { toast } from "sonner";
 export const Navbar = () => {
   const { userData, loading, setUserData } = useSyncUser();
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
@@ -22,6 +23,7 @@ export const Navbar = () => {
 
     const ref = doc(db, "users", userData.uid!);
     await updateDoc(ref, { avatarIndex: tempSelectedAvatar });
+    toast.success("Avatar updated successfully!");
 
     const updated: UserData = { ...userData, avatarIndex: tempSelectedAvatar };
     localStorage.setItem("codeIIEST_user", JSON.stringify(updated));
@@ -63,11 +65,10 @@ export const Navbar = () => {
                   <button
                     key={idx}
                     onClick={() => setTempSelectedAvatar(idx)}
-                    className={`relative rounded-xl overflow-hidden aspect-square border transition-all ${
-                      active
+                    className={`relative rounded-xl overflow-hidden aspect-square border transition-all ${active
                         ? "border-blue-500 shadow-[0_0_10px_rgba(0,123,255,0.35)] scale-[1.05]"
                         : "border-white/5 hover:border-white/20 opacity-80 hover:opacity-100"
-                    }`}
+                      }`}
                   >
                     <img src={img} className="w-full h-full object-cover" />
                     {active && (
@@ -108,7 +109,9 @@ export const Navbar = () => {
         </a>
 
         <div className="flex items-center gap-4">
-          {loading ? null : !userData ? (
+          {loading ? (
+            <AvatarSkeleton />
+          ) : !userData ? (
             <button
               onClick={handleLoginRedirect}
               className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
@@ -127,7 +130,13 @@ export const Navbar = () => {
             </button>
           )}
         </div>
+
       </nav>
     </>
   );
 };
+
+
+const AvatarSkeleton = () => (
+  <div className="w-10 h-10 rounded-full bg-white/10 animate-pulse" />
+);
