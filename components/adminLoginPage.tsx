@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
         <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-[#0c0c0d] via-[#121218] to-[#0d0e10] text-white">
             <Navbar />
             <div className="min-h-screen flex items-center justify-center text-white">
-                <div className="p-6 bg-[#111] border border-gray-700 rounded-lg">
+                <div className="bg-[#111] border border-gray-700 rounded-lg">
                     <h2 className="text-2xl mb-4 font-bold">Admin Login</h2>
                     <button
                         onClick={handleAdminLogin}

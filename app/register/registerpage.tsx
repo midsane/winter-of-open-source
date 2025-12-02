@@ -122,7 +122,7 @@ export function RegisterPage() {
 
             <div className="min-h-[calc(100vh-80px)] bg-[#0c0c0d] flex items-center justify-center py-8 font-sans">
                 <div className="w-full max-w-2xl bg-[#121218] border border-blue-900/50 rounded-xl shadow-2xl p-6 sm:p-10">
-                    <h2 className="text-3xl font-bold text-white mb-2 text-center">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 text-center">
                         CodeIIEST Registration
                     </h2>
                     <p className="text-gray-400 mb-8 text-center">
@@ -130,11 +130,11 @@ export function RegisterPage() {
                     </p>
 
                     <div className="mb-8">
-                        <label className="block text-lg font-medium text-blue-400 mb-4 flex items-center">
+                        <label className="block text-sm sm:text-lg font-medium text-blue-400 mb-4 flex items-center">
                             <User className="w-5 h-5 mr-2" /> Select Your Avatar
                         </label>
 
-                        <div className="grid grid-cols-4 sm:grid-cols-8 gap-4">
+                        <div className="grid grid-cols-5 sm:grid-cols-8 gap-2 sm:gap-4">
                             {avatarImages.map((img, index) => (
                                 <button
                                     key={index}
@@ -157,7 +157,7 @@ export function RegisterPage() {
                         <div className="mt-4 text-center">
                             <img
                                 src={avatarImages[avatarIndex]}
-                                className="w-16 h-16 mx-auto rounded-full ring-2 ring-blue-500"
+                                className="sm:w-16 sm:h-16 h-12 w-12 mx-auto rounded-full ring-2 ring-blue-500"
                             />
                         </div>
                     </div>
