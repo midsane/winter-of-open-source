@@ -30,7 +30,7 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
   } = props;
 
   return (
-    <div className="relative py-12 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div className="relative py-5 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
       <motion.div
         className="flex flex-col text-center lg:text-left relative z-20"

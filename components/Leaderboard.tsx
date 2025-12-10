@@ -65,6 +65,8 @@ const SkeletonRow = () => (
 export default function LeaderboardPage() {
   const [dynamicData, setDynamicData] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -95,11 +97,20 @@ export default function LeaderboardPage() {
   const top3 = sorted.slice(0, 3);
   const others = sorted.slice(3);
 
+  const filteredOthers = others.filter((u) => {
+    const q = search.toLowerCase();
+    return (
+      u.name.toLowerCase().includes(q) ||
+      (u.roll?.toLowerCase() ?? "").includes(q)
+    );
+  });
+
+
   const ITEMS_PER_PAGE = 10;
   const [page, setPage] = useState(0);
   const tableRef = useRef<HTMLDivElement | null>(null);
 
-  const paginated = others.slice(page * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE + ITEMS_PER_PAGE);
+  const paginated = filteredOthers.slice(page * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE + ITEMS_PER_PAGE);
   const maxPage = Math.ceil(others.length / ITEMS_PER_PAGE) - 1;
 
   useEffect(() => {
@@ -215,7 +226,39 @@ export default function LeaderboardPage() {
           ref={tableRef}
           className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-x-auto hide-scrollbar"
         >
-          {/* Columns */}
+
+          <div className="relative group mb-2">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or roll number..."
+              className="
+                    w-full px-4 py-3 rounded-t-xl 
+                    bg-[#0e111a] border border-white/10 
+                    text-gray-200 placeholder-gray-500
+
+                    shadow-[0_0_15px_-3px_rgba(0,0,0,0.4)]
+                    backdrop-blur-xl
+
+                    focus:outline-none 
+                    focus:border-blue-500 
+                    focus:ring-2 
+                    focus:ring-blue-500/20
+                    transition-all duration-200
+                    "
+            />
+
+            <div className="
+                  absolute right-4 top-1/2 -translate-y-1/2 
+                  text-gray-400 
+                  group-focus-within:text-blue-400 
+                  transition
+                ">
+              🔍
+            </div>
+          </div>
+
           <div className="min-w-[600px]">
             <div className="grid grid-cols-10 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
               <div className="col-span-1">Rank</div>
@@ -226,7 +269,7 @@ export default function LeaderboardPage() {
               <div className="col-span-1 text-right">Hard</div>
             </div>
 
-            {/* Table Skeleton or Rows */}
+
             {loading ? (
               <>
                 {Array.from({ length: 10 }).map((_, i) => (
@@ -266,6 +309,11 @@ export default function LeaderboardPage() {
                     <div className="col-span-1 text-right font-bold text-white font-mono">{user.hard}</div>
                   </div>
                 ))}
+                {paginated?.length === 0 &&
+                  <div className="flex justify-center items-center p-4">
+                    No results found
+                  </div>
+                }
               </>
             )}
 

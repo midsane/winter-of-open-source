@@ -87,21 +87,21 @@ export const RepoPage = () => {
           >
             <div className="flex flex-col gap-3">
 
-              {/* Repo Link */}
+      
               <a
                 href={repo.repoLink}
                 target="_blank"
                 className="text-lg font-semibold text-blue-400 hover:underline"
               >
-                {repo.maintainerName}'s Repository
+                {repo.repoDescription}
               </a>
 
-              {/* Description */}
+      
               <p className="text-neutral-400 text-sm">
-                {repo.repoDescription}
+                by {repo.maintainerName}
               </p>
 
-              {/* Tags */}
+            
               <div className="flex flex-wrap gap-2 mt-2">
                 {repo.repoTags.map((tag, t) => (
                   <span
@@ -113,7 +113,7 @@ export const RepoPage = () => {
                 ))}
               </div>
 
-              {/* Discord ID */}
+             
               <div className="text-sm mt-3">
                 <span className="font-medium text-neutral-300">Discord:</span>{" "}
                 {repo.maintainerDiscordId || "Not provided"}
