@@ -1,11 +1,12 @@
 'use client'
+import Link from 'next/link';
 import styled from 'styled-components';
 
 export const Button = ({ text, link }: { text: string, link: string }) => {
   return (
     <StyledWrapper>
+      <Link href={link} >
       <button
-        onClick={() => window.location.href = link}
         className="button">
         <span className="text">{text}</span>
         <span className="svg">
@@ -14,15 +15,16 @@ export const Button = ({ text, link }: { text: string, link: string }) => {
           </svg>
         </span>
       </button>
+      </Link>
     </StyledWrapper>
   );
 }
 
 export const Button2 = ({ text, link }: { text: string, link: string }) => {
   return (
-    <StyledWrapper2>
+    <Link href={link} >
+     <StyledWrapper2>
       <button
-        onClick={() => window.location.href = link}
         className="button absolute min-w-[338px] top-12">
         <span className="text">{text}</span>
         <span className="svg">
@@ -32,6 +34,7 @@ export const Button2 = ({ text, link }: { text: string, link: string }) => {
         </span>
       </button>
     </StyledWrapper2>
+    </Link>
   );
 }
 

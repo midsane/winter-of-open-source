@@ -41,7 +41,7 @@ export function Banner({
   const days = Math.floor(totalSeconds / 86400)
 
   return (
-    <div className="relative mx-auto w-full max-w-[90%] mt-6">
+    <div className="relative mx-auto w-full max-w-[90%] xl:max-w-[1250px] mt-6">
       <BannerContainer backgroundImage={backgroundImage}>
         <BannerBadges badges={badges} />
 

@@ -6,6 +6,7 @@ import "./globals.css"
 import { Toaster } from "sonner";
 import { Footer } from "@/components/footer"
 import favicon from "@/public/images/favicon.png"
+import { Navbar } from "@/components/navbar"
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -40,8 +41,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${figtree.variable} ${geistMono.variable} font-sans antialiased`}>
         <Toaster theme="dark" richColors position="top-center" />
-        {children}
-        <Footer />
+        <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-[#0c0c0d] via-[#121218] to-[#0d0e10] text-white">
+          <Navbar />
+          {children}
+          <Footer />
+        </section>
         <script
           dangerouslySetInnerHTML={{
             __html: `

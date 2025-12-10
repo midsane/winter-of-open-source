@@ -72,7 +72,7 @@ const statusColors: Record<string, string> = {
 
 export const RepoPage = () => {
   return (
-    <div className="w-full min-h-screen bg-[#0f0f0f] text-neutral-200 p-8">
+    <div className="w-full min-h-screen xl:max-w-[1280px]  mx-auto bg-[#0f0f0f] text-neutral-200 p-8">
       <h1 className="text-3xl font-semibold mb-8 text-neutral-100">
         Repository Dashboard
       </h1>

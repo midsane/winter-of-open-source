@@ -1,12 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Trophy } from "lucide-react";
-import { Navbar } from "./navbar";
 import { db } from "@/lib/firebase/client";
 import { collection, getDocs } from "firebase/firestore";
 import { Banner } from "./banner/Banner";
-
-const bannerUrl = "/banner.gif";
 
 export const avatarImages: string[] = [
   "https://imagedelivery.net/TkcHhODAR5Y7jFoICvSX0Q/014e9e28-9f8d-4523-3e9f-ef87569b1100/q=auto",
@@ -174,8 +171,7 @@ export default function LeaderboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-blue-500/30">
-      <Navbar />
+    <>
       <Banner
         serverNow={Date.now()}
         title="Winter Of Open Source "
@@ -298,6 +294,6 @@ export default function LeaderboardPage() {
         )}
 
       </div>
-    </div>
+    </>
   );
 }

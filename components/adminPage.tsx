@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase/client";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { avatarImages } from "@/components/Leaderboard";
-import { Navbar } from "./navbar";
 import { toast } from "sonner";
 
 type UserData = {
@@ -77,97 +76,93 @@ export function AdminPage() {
     }
 
     return (
-        <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-[#0c0c0d] via-[#121218] to-[#0d0e10] text-white">
-            <Navbar />
+        <div className="min-h-screen bg-black text-white p-6">
+            <h1 className="text-3xl font-bold mb-6 text-center">Admin Panel - Edit User Stats</h1>
 
-            <div className="min-h-screen bg-black text-white p-6">
-                <h1 className="text-3xl font-bold mb-6 text-center">Admin Panel - Edit User Stats</h1>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {users.map((u) => (
-                        <div key={u.uid} className="p-4 bg-[#111] rounded-xl border border-gray-700">
-                            <div className="flex items-center gap-4">
-                                <img
-                                    src={avatarImages[u.avatarIndex]}
-                                    className="w-16 h-16 rounded-full ring-2 ring-blue-500"
-                                />
-                                <div>
-                                    <p className="text-lg font-semibold">{u.name}</p>
-                                    <p className="text-sm text-gray-400">Roll: {u.roll}</p>
-                                    <p className="text-xs text-gray-500">{u.email}</p>
-                                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {users.map((u) => (
+                    <div key={u.uid} className="p-4 bg-[#111] rounded-xl border border-gray-700">
+                        <div className="flex items-center gap-4">
+                            <img
+                                src={avatarImages[u.avatarIndex]}
+                                className="w-16 h-16 rounded-full ring-2 ring-blue-500"
+                            />
+                            <div>
+                                <p className="text-lg font-semibold">{u.name}</p>
+                                <p className="text-sm text-gray-400">Roll: {u.roll}</p>
+                                <p className="text-xs text-gray-500">{u.email}</p>
                             </div>
-
-                            <div className="mt-4 grid grid-cols-3 gap-3">
-                                <div>
-                                    <label className="text-sm">Easy</label>
-                                    <input
-                                        type="number"
-                                        className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
-                                        value={u.easy}
-                                        onChange={(e) => {
-                                            const v = Number(e.target.value);
-                                            setUsers((prev) =>
-                                                prev.map((x) =>
-                                                    x.uid === u.uid ? { ...x, easy: v } : x
-                                                )
-                                            );
-                                        }}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="text-sm">Medium</label>
-                                    <input
-                                        type="number"
-                                        className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
-                                        value={u.medium}
-                                        onChange={(e) => {
-                                            const v = Number(e.target.value);
-                                            setUsers((prev) =>
-                                                prev.map((x) =>
-                                                    x.uid === u.uid ? { ...x, medium: v } : x
-                                                )
-                                            );
-                                        }}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="text-sm">Hard</label>
-                                    <input
-                                        type="number"
-                                        className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
-                                        value={u.hard}
-                                        onChange={(e) => {
-                                            const v = Number(e.target.value);
-                                            setUsers((prev) =>
-                                                prev.map((x) =>
-                                                    x.uid === u.uid ? { ...x, hard: v } : x
-                                                )
-                                            );
-                                        }}
-                                    />
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={() =>
-                                    updateUser(u.uid, {
-                                        easy: u.easy,
-                                        medium: u.medium,
-                                        hard: u.hard,
-                                    })
-                                }
-                                className="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold"
-                                disabled={saving}
-                            >
-                                {saving ? "Saving…" : "Save Changes"}
-                            </button>
                         </div>
-                    ))}
-                </div>
+
+                        <div className="mt-4 grid grid-cols-3 gap-3">
+                            <div>
+                                <label className="text-sm">Easy</label>
+                                <input
+                                    type="number"
+                                    className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
+                                    value={u.easy}
+                                    onChange={(e) => {
+                                        const v = Number(e.target.value);
+                                        setUsers((prev) =>
+                                            prev.map((x) =>
+                                                x.uid === u.uid ? { ...x, easy: v } : x
+                                            )
+                                        );
+                                    }}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="text-sm">Medium</label>
+                                <input
+                                    type="number"
+                                    className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
+                                    value={u.medium}
+                                    onChange={(e) => {
+                                        const v = Number(e.target.value);
+                                        setUsers((prev) =>
+                                            prev.map((x) =>
+                                                x.uid === u.uid ? { ...x, medium: v } : x
+                                            )
+                                        );
+                                    }}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="text-sm">Hard</label>
+                                <input
+                                    type="number"
+                                    className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
+                                    value={u.hard}
+                                    onChange={(e) => {
+                                        const v = Number(e.target.value);
+                                        setUsers((prev) =>
+                                            prev.map((x) =>
+                                                x.uid === u.uid ? { ...x, hard: v } : x
+                                            )
+                                        );
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() =>
+                                updateUser(u.uid, {
+                                    easy: u.easy,
+                                    medium: u.medium,
+                                    hard: u.hard,
+                                })
+                            }
+                            className="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold"
+                            disabled={saving}
+                        >
+                            {saving ? "Saving…" : "Save Changes"}
+                        </button>
+                    </div>
+                ))}
             </div>
-        </section>
+        </div>
     );
 }
