@@ -10,6 +10,8 @@ import { db } from "@/lib/firebase/client";
 import { doc, updateDoc } from "firebase/firestore";
 import type { UserData } from "./Leaderboard";
 import { toast } from "sonner";
+import logoImage from "@/public/images/favicon.png"
+import Image from "next/image";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -109,10 +111,10 @@ export const Navbar = () => {
 
       <nav className="relative z-20 flex items-center justify-between px-6 py-5 max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-            C
-          </div>
-          <span className="text-white text-xl font-bold">CodeIIEST</span>
+          <Image width={80} height={80} 
+          alt="codeiiest"  
+          src={logoImage} />
+          <p>CodeIIEST</p>
         </Link>
 
         <Link

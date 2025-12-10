@@ -211,8 +211,10 @@ export default function LeaderboardPage() {
 
         </div>
 
-        <div ref={tableRef} className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
-
+        <div
+          ref={tableRef}
+          className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-x-auto hide-scrollbar"
+        >
           {/* Columns */}
           <div className="min-w-[600px]">
             <div className="grid grid-cols-10 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">

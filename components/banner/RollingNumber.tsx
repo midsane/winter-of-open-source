@@ -1,3 +1,4 @@
+"use client";
 import { AnimatePresence, motion } from 'framer-motion'
 
 export function RollingNumber({ value }: { value: number }) {

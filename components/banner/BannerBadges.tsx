@@ -1,3 +1,4 @@
+"use client";
 import { AlarmClock, Check, Gift, Star, Ticket } from 'lucide-react'
 import { JSX } from 'react'
 import Image from 'next/image'

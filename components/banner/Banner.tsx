@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react'
 import { BadgeType, BannerBadges } from './BannerBadges'
 import { BannerContainer } from './BannerContainer'

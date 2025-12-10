@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { Check, User, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
-import { db } from "@/lib/firebase/client"; // still using Firebase for CRUD
+import { db } from "@/lib/firebase/client"; 
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { avatarImages } from "@/components/Leaderboard";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components/navbar";
 
 const REQUIRED_DOMAIN = "@students.iiests.ac.in";
 
@@ -26,18 +25,16 @@ export function RegisterPage() {
         return { roll, name };
     };
 
-    // Check local storage on mount — if we have a stored user, show the "already registered" UI.
+  
     useEffect(() => {
         const stored = localStorage.getItem("codeIIEST_user");
         if (stored) setAlreadyRegistered(true);
     }, []);
 
-    // Supabase redirect result handler.
-    // NOTE: this effect depends on alreadyRegistered so that if the user already has localStorage set,
-    // we DO NOT process the redirect (and won't auto-redirect to leaderboard).
+   
     useEffect(() => {
         async function checkRedirect() {
-            // If user was previously registered (localStorage), don't auto-process redirect
+
             if (alreadyRegistered) {
                 setChecking(false);
                 return;
@@ -72,7 +69,6 @@ export function RegisterPage() {
                 const userSnap = await getDoc(userRef);
 
                 if (!userSnap.exists()) {
-                    // Create the user doc for first-time registrants
                     try {
                         await setDoc(userRef, {
                             uid,
@@ -85,7 +81,7 @@ export function RegisterPage() {
                             hard: 0,
                         });
                     } catch (e) {
-                        // If Firestore write fails, surface the error to the UI and bail out.
+                    
                         setMsg(
                             e instanceof Error ? `Firestore write failed: ${e.message}` : String(e)
                         );
@@ -93,8 +89,6 @@ export function RegisterPage() {
                         return;
                     }
                 }
-
-                // Persist local marker that user is registered
                 localStorage.setItem(
                     "codeIIEST_user",
                     JSON.stringify({
@@ -106,7 +100,7 @@ export function RegisterPage() {
                     })
                 );
 
-                // Successful registration (or existing Firestore doc) -> go to leaderboard
+             
                 router.push("/leaderboard");
             } catch (err) {
                 setMsg(err instanceof Error ? err.message : String(err));
@@ -122,7 +116,6 @@ export function RegisterPage() {
         setSaving(true);
         setMsg("");
 
-        // remember the chosen avatar across the OAuth redirect
         localStorage.setItem("avatarIndex", String(avatarIndex));
 
         try {
