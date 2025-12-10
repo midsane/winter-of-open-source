@@ -110,11 +110,11 @@ export const Navbar = () => {
       )}
 
       <nav className="relative z-20 flex items-center justify-between px-6 py-5 max-w-7xl mx-auto">
-        <Link href="/" className="flex items-center gap-2">
-          <Image width={80} height={80} 
+        <Link href="/" className="flex items-center gap-1 sm:gap-2">
+          <Image width={70} height={70} 
           alt="codeiiest"  
           src={logoImage} />
-          <p>CodeIIEST</p>
+          <p className="hidden sm:block sm:text-sm" >CodeIIEST</p>
         </Link>
 
         <Link
