@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, VenetianMask } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -64,7 +64,9 @@ export default function AdminLoginPage() {
         <div className="min-h-[calc(100vh-80px)] flex items-center justify-center py-8 font-sans">
 
             <div className="w-full max-w-[90%] justify-center items-center gap-5 flex flex-col sm:max-w-2xl bg-[#121218] border border-blue-900/50 rounded-xl shadow-2xl p-6 sm:p-10">
-                <h1>Admin Login</h1>
+                <div className="flex gap-2">
+                    <h1>Admin Login </h1><VenetianMask />
+                </div>
                 <button
                     onClick={handleAdminLogin}
                     className="w-full inline-flex items-center justify-center py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg shadow-blue-600/30 transition-all duration-300"
