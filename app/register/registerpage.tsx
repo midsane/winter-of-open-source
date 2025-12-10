@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Check, User, Loader2 } from "lucide-react";
 import { auth, db, provider } from "@/lib/firebase/client";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { avatarImages } from "@/components/Leaderboard";
 import { useRouter } from "next/navigation";
@@ -26,63 +26,87 @@ export function RegisterPage() {
         return { roll, name };
     };
 
+    // Check local storage
     useEffect(() => {
         const stored = localStorage.getItem("codeIIEST_user");
         if (stored) setAlreadyRegistered(true);
-        setChecking(false);
+    }, []);
+
+    // Handle redirect result
+    useEffect(() => {
+        async function fetchRedirect() {
+            try {
+                const result = await getRedirectResult(auth);
+                if (!result) {
+                    setChecking(false);
+                    return;
+                }
+
+                const email = result.user.email ?? "";
+
+                if (!email.endsWith(REQUIRED_DOMAIN)) {
+                    await auth.signOut();
+                    setMsg("Only institute (@students.iiests.ac.in) emails allowed.");
+                    setChecking(false);
+                    return;
+                }
+
+                // Retrieve avatarIndex that user selected before redirect
+                const storedAvatarIndex = Number(localStorage.getItem("avatarIndex") ?? 0);
+                setAvatarIndex(storedAvatarIndex);
+
+                const { name, roll } = parseEmail(email);
+                const userRef = doc(db, "users", result.user.uid);
+                const userSnap = await getDoc(userRef);
+
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        name,
+                        roll,
+                        avatarIndex: storedAvatarIndex,
+                        email,
+                        easy: 0,
+                        medium: 0,
+                        hard: 0
+                    });
+                }
+
+                localStorage.setItem(
+                    "codeIIEST_user",
+                    JSON.stringify({
+                        uid: result.user.uid,
+                        name,
+                        roll,
+                        email,
+                        avatarIndex: storedAvatarIndex
+                    })
+                );
+
+                router.push("/leaderboard");
+            } catch (err) {
+                setMsg(err instanceof Error ? err.message : String(err));
+            } finally {
+                setChecking(false);
+            }
+        }
+
+        fetchRedirect();
     }, []);
 
     const handleRegister = async () => {
         setSaving(true);
         setMsg("");
 
+        // store avatar index before redirect
+        localStorage.setItem("avatarIndex", String(avatarIndex));
+
         try {
-            const result = await signInWithPopup(auth, provider);
-            const email = result.user.email ?? "";
-
-            if (!email.endsWith(REQUIRED_DOMAIN)) {
-                await auth.signOut();
-                setMsg("Only institute (@students.iiests.ac.in) emails allowed.");
-                setSaving(false);
-                return;
-            }
-
-            const { name, roll } = parseEmail(email);
-            const userRef = doc(db, "users", result.user.uid);
-            const userSnap = await getDoc(userRef);
-
-            if (!userSnap.exists()) {
-                await setDoc(userRef, {
-                    name,
-                    roll,
-                    avatarIndex,
-                    email,
-                    easy: 0,
-                    medium: 0,
-                    hard: 0
-                });
-            }
-
-            localStorage.setItem(
-                "codeIIEST_user",
-                JSON.stringify({
-                    uid: result.user.uid,
-                    name,
-                    roll,
-                    email,
-                    avatarIndex
-                })
-            );
-
-            setMsg("Login successful!");
-            setTimeout(() => router.push("/leaderboard"), 400);
-
+            await signInWithRedirect(auth, provider);
+            return;
         } catch (err) {
-            if (err instanceof Error) setMsg(err.message);
-            else setMsg(String(err));
+            setMsg(err instanceof Error ? err.message : String(err));
+            setSaving(false);
         }
-
-        setSaving(false);
     };
 
     if (checking) {
@@ -118,7 +142,7 @@ export function RegisterPage() {
 
     return (
         <div className="min-h-[calc(100vh-80px)] flex items-center justify-center py-8 font-sans">
-            <div className="w-full  max-w-[90%] sm:max-w-2xl bg-[#121218] border border-blue-900/50 rounded-xl shadow-2xl p-6 sm:p-10">
+            <div className="w-full max-w-[90%] sm:max-w-2xl bg-[#121218] border border-blue-900/50 rounded-xl shadow-2xl p-6 sm:p-10">
                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 text-center">
                     CodeIIEST Registration
                 </h2>
@@ -137,10 +161,11 @@ export function RegisterPage() {
                                 key={index}
                                 type="button"
                                 onClick={() => setAvatarIndex(index)}
-                                className={`relative aspect-square rounded-full p-0.5 transition-all duration-200 ring-offset-2 ring-offset-[#121218] ${avatarIndex === index
+                                className={`relative aspect-square rounded-full p-0.5 transition-all duration-200 ring-offset-2 ring-offset-[#121218] ${
+                                    avatarIndex === index
                                         ? "ring-4 ring-blue-500 shadow-xl shadow-blue-500/30"
                                         : "opacity-70 hover:opacity-100 hover:ring-2 ring-gray-600"
-                                    }`}
+                                }`}
                             >
                                 <img src={img} className="w-full h-full object-cover rounded-full" />
                                 {avatarIndex === index && (
@@ -172,11 +197,7 @@ export function RegisterPage() {
                     )}
                 </button>
 
-                {msg && (
-                    <p className="mt-4 text-center text-sm text-red-400">
-                        {msg}
-                    </p>
-                )}
+                {msg && <p className="mt-4 text-center text-sm text-red-400">{msg}</p>}
             </div>
         </div>
     );
