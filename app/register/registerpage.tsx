@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Check, User, Loader2 } from "lucide-react";
-import { auth, db, provider } from "@/lib/firebase/client";
-import { signInWithRedirect, getRedirectResult } from "firebase/auth";
+import { supabase } from "@/lib/supabase/client";
+import { db } from "@/lib/firebase/client"; // still using Firebase for CRUD
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { avatarImages } from "@/components/Leaderboard";
 import { useRouter } from "next/navigation";
@@ -26,62 +26,87 @@ export function RegisterPage() {
         return { roll, name };
     };
 
-    // Check local storage
+    // Check local storage on mount — if we have a stored user, show the "already registered" UI.
     useEffect(() => {
         const stored = localStorage.getItem("codeIIEST_user");
         if (stored) setAlreadyRegistered(true);
     }, []);
 
-    // Handle redirect result
+    // Supabase redirect result handler.
+    // NOTE: this effect depends on alreadyRegistered so that if the user already has localStorage set,
+    // we DO NOT process the redirect (and won't auto-redirect to leaderboard).
     useEffect(() => {
-        async function fetchRedirect() {
+        async function checkRedirect() {
+            // If user was previously registered (localStorage), don't auto-process redirect
+            if (alreadyRegistered) {
+                setChecking(false);
+                return;
+            }
+
             try {
-                const result = await getRedirectResult(auth);
-                if (!result) {
+                const {
+                    data: { user },
+                } = await supabase.auth.getUser();
+
+                if (!user) {
                     setChecking(false);
                     return;
                 }
 
-                const email = result.user.email ?? "";
+                const email = user.email ?? "";
 
                 if (!email.endsWith(REQUIRED_DOMAIN)) {
-                    await auth.signOut();
+                    await supabase.auth.signOut();
                     setMsg("Only institute (@students.iiests.ac.in) emails allowed.");
                     setChecking(false);
                     return;
                 }
 
-                // Retrieve avatarIndex that user selected before redirect
                 const storedAvatarIndex = Number(localStorage.getItem("avatarIndex") ?? 0);
                 setAvatarIndex(storedAvatarIndex);
 
                 const { name, roll } = parseEmail(email);
-                const userRef = doc(db, "users", result.user.uid);
+                const uid = user.id;
+
+                const userRef = doc(db, "users", uid);
                 const userSnap = await getDoc(userRef);
 
                 if (!userSnap.exists()) {
-                    await setDoc(userRef, {
-                        name,
-                        roll,
-                        avatarIndex: storedAvatarIndex,
-                        email,
-                        easy: 0,
-                        medium: 0,
-                        hard: 0
-                    });
+                    // Create the user doc for first-time registrants
+                    try {
+                        await setDoc(userRef, {
+                            uid,
+                            name,
+                            roll,
+                            avatarIndex: storedAvatarIndex,
+                            email,
+                            easy: 0,
+                            medium: 0,
+                            hard: 0,
+                        });
+                    } catch (e) {
+                        // If Firestore write fails, surface the error to the UI and bail out.
+                        setMsg(
+                            e instanceof Error ? `Firestore write failed: ${e.message}` : String(e)
+                        );
+                        setChecking(false);
+                        return;
+                    }
                 }
 
+                // Persist local marker that user is registered
                 localStorage.setItem(
                     "codeIIEST_user",
                     JSON.stringify({
-                        uid: result.user.uid,
+                        uid,
                         name,
                         roll,
                         email,
-                        avatarIndex: storedAvatarIndex
+                        avatarIndex: storedAvatarIndex,
                     })
                 );
 
+                // Successful registration (or existing Firestore doc) -> go to leaderboard
                 router.push("/leaderboard");
             } catch (err) {
                 setMsg(err instanceof Error ? err.message : String(err));
@@ -90,19 +115,26 @@ export function RegisterPage() {
             }
         }
 
-        fetchRedirect();
-    }, []);
+        checkRedirect();
+    }, [alreadyRegistered, router]);
 
     const handleRegister = async () => {
         setSaving(true);
         setMsg("");
 
-        // store avatar index before redirect
+        // remember the chosen avatar across the OAuth redirect
         localStorage.setItem("avatarIndex", String(avatarIndex));
 
         try {
-            await signInWithRedirect(auth, provider);
-            return;
+            await supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: `${window.location.origin}/register`,
+                    queryParams: {
+                        prompt: "select_account",
+                    },
+                },
+            });
         } catch (err) {
             setMsg(err instanceof Error ? err.message : String(err));
             setSaving(false);
@@ -120,12 +152,12 @@ export function RegisterPage() {
     if (alreadyRegistered) {
         return (
             <div className="relative min-h-screen w-full overflow-hidden">
-                <Navbar />
                 <div className="min-h-[calc(100vh-80px)] flex items-center justify-center text-center px-4">
                     <div className="bg-[#121218] border border-gray-700 rounded-xl p-8 max-w-md w-full shadow-xl">
                         <h2 className="text-3xl font-bold mb-4">You’re already registered</h2>
                         <p className="text-gray-400 mb-6">
-                            You have already joined CodeIIEST Winter of Open Source Event. Continue to the leaderboard.
+                            You have already joined CodeIIEST Winter of Open Source Event. Continue to
+                            the leaderboard.
                         </p>
 
                         <button

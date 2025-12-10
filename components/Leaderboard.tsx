@@ -192,7 +192,7 @@ export default function LeaderboardPage() {
         ]}
       />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 pb-20">
+      <div className="relative mt-20 z-10 max-w-5xl mx-auto px-4 pb-20">
         <div className="mt-12 mb-20 flex items-end justify-center w-full gap-2 sm:gap-6 px-0 sm:px-12">
 
           {loading ? (
