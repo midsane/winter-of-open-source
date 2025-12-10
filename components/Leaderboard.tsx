@@ -4,6 +4,9 @@ import { ChevronLeft, ChevronRight, Trophy } from "lucide-react";
 import { Navbar } from "./navbar";
 import { db } from "@/lib/firebase/client";
 import { collection, getDocs } from "firebase/firestore";
+import { Banner } from "./banner/Banner";
+
+const bannerUrl = "/banner.gif";
 
 export const avatarImages: string[] = [
   "https://imagedelivery.net/TkcHhODAR5Y7jFoICvSX0Q/014e9e28-9f8d-4523-3e9f-ef87569b1100/q=auto",
@@ -173,6 +176,25 @@ export default function LeaderboardPage() {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-blue-500/30">
       <Navbar />
+      <Banner
+        serverNow={Date.now()}
+        title="Winter Of Open Source "
+        subtitle="ends in"
+        backgroundImage="https://i.pinimg.com/1200x/47/7f/28/477f281a16f04de053a82b36b3d594c8.jpg"
+        deadline={new Date("2026-01-15T12:00:00+05:30").getTime()}
+        badges={[
+          {
+            text: "CodeIIEST",
+            icon: "codeiiest",
+            variant: "green"
+          },
+          {
+            text: "GDSC",
+            icon: "gdsc",
+            variant: "red"
+          }
+        ]}
+      />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 pb-20">
         <div className="mt-12 mb-20 flex items-end justify-center w-full gap-2 sm:gap-6 px-0 sm:px-12">

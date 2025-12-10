@@ -1,11 +1,13 @@
 "use client";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Trophy } from "lucide-react";
-import mainImg from "@/public/images/design-mode/Gemini_Generated_Image_fwaiiofwaiiofwai.png"
-import { Navbar } from "./navbar";
-import { avatarImages } from "./Leaderboard";
-const mainImageUrl = mainImg ? (mainImg as any).src : "https://via.placeholder.com/600x600?text=Your+Image+Here"; // Fallback placeholder
 
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { Navbar } from "./navbar";
+
+const mainVideoUrl = "/videos/landingPageVideo.mp4";
+import handImg from "@/public/images/hand.png"
+import { Button2 } from "./button";
 
 type LandingPageContentProps = {
   dailyVolumeLabel?: string;
@@ -34,25 +36,26 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
 
       <Navbar />
 
-      <div className="relative py-12 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative py-12 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+        {/* LEFT SIDE */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.645, 0.045, 0.355, 1], delay: 0.2 }}
           className="flex flex-col text-center lg:text-left relative z-20"
         >
-          {/* "128% Collected" Bubble */}
+
+          {/* Bubble */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+
             className="inline-flex items-center bg-blue-700/30 text-blue-200 text-xs sm:text-sm font-medium px-3 py-1 rounded-full mb-4 self-center lg:self-start border border-blue-600/50 shadow-md"
           >
-            <span role="img" aria-label="fire" className="mr-1">🔥</span>for IIEST Shibpur's students
+            <span role="img" aria-label="fire" className="mr-1">🔥</span>
+            for IIEST Shibpur's students
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tighter text-white mb-6 animate-text-gradient">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-tight 
+          bg-gradient-to-r from-[#d1fe17] via-[#ffe500] to-[#53c546]
+          text-transparent bg-clip-text">
             {headline}
           </h1>
 
@@ -65,18 +68,16 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <motion.a
               href={primaryButtonHref}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
+
               className="inline-flex items-center justify-center px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-base sm:text-lg"
             >
-              {primaryButtonText} <ArrowUpRight className="ml-2 w-5 h-5" />
+              {primaryButtonText}
+              <ArrowUpRight className="ml-2 w-5 h-5" />
             </motion.a>
+
             <motion.a
               href={secondaryButtonHref}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
+
               className="inline-flex items-center justify-center px-8 py-3 border border-gray-600 text-gray-300 hover:text-white hover:border-white rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-base sm:text-lg"
             >
               {secondaryButtonText}
@@ -84,63 +85,38 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
           </div>
         </motion.div>
 
-        {/* RIGHT SIDE: ABSTRACT WAVES / VISUALS */}
-        <div className="relative w-full aspect-square lg:aspect-[unset] lg:h-[600px] flex items-center justify-center overflow-hidden z-10">
-          {/* Main wave structure - using multiple divs for layering effect */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {/* Largest Wave - Deepest Blue */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-              className="absolute w-full h-full rounded-full bg-gradient-to-br from-blue-900/60 to-purple-900/60 blur-3xl"
-              style={{
-                transform: 'scale(1.5) translateY(10%) translateX(20%)',
-                maskImage: 'radial-gradient(circle at 60% 50%, black 60%, transparent 100%)',
-                WebkitMaskImage: 'radial-gradient(circle at 60% 50%, black 60%, transparent 100%)'
-              }}
-            />
-            {/* Mid Wave - Lighter Blue */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
-              className="absolute w-full h-full rounded-full bg-gradient-to-br from-blue-700/60 to-purple-700/60 blur-2xl"
-              style={{
-                transform: 'scale(1.3) translateY(-10%) translateX(-10%)',
-                maskImage: 'radial-gradient(circle at 40% 55%, black 60%, transparent 100%)',
-                WebkitMaskImage: 'radial-gradient(circle at 40% 55%, black 60%, transparent 100%)'
-              }}
-            />
-            
-            {/* --- CENTRAL IMAGE --- */}
-           {/* --- CENTRAL IMAGE --- */}
-            <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
-                className="absolute w-[90%] h-[90%] rounded-full overflow-hidden z-10"
-            >
-                <img
-                    src={mainImageUrl} // Use the resolved image URL
-                    alt="Main visual for CodeIIEST"
-                    className="w-full h-full object-cover" // Ensure it covers the circular div
-                />
-            </motion.div>
+        {/* RIGHT SIDE: CIRCLE + GARLAND + VIDEO */}
+        <div className="relative w-full aspect-square lg:h-[600px] flex items-center justify-center overflow-visible z-10">
 
-            {/* Top Wave - Brightest Blue */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
-              className="absolute w-full h-full rounded-full bg-gradient-to-br from-blue-500/70 to-blue-700/70 blur-xl"
-              style={{
-                transform: 'scale(1.1) translateY(-20%) translateX(5%)',
-                maskImage: 'radial-gradient(circle at 50% 60%, black 60%, transparent 100%)',
-                WebkitMaskImage: 'radial-gradient(circle at 50% 60%, black 60%, transparent 100%)'
-              }}
-            />
-          </div>  
+          <div className="relative w-[90%] h-[90%] rounded-full flex items-center justify-center">
+
+
+            {/* Video */}
+            <div className="w-full h-full border-2 border-blue-400 rounded-full overflow-hidden z-20">
+              <video
+                src={mainVideoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+
+            </div>
+            {/* CTA BUTTON */}
+            <div
+              className="
+              fixed -bottom-14 scale-75 z-[1000]
+              [@media(min-width:560px)]:absolute
+              [@media(min-width:560px)]:-bottom-5
+              [@media(min-width:560px)]:scale-100
+            "
+            >
+              <Button2 text='Checkout out the Repos' link='/repos' />
+              <Image width={250} src={handImg} alt='hand' />
+            </div>
+
+          </div>
         </div>
       </div>
     </section>
