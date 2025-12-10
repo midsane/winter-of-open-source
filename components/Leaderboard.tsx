@@ -39,7 +39,7 @@ const getPoints = (easy: number, medium: number, hard: number) => {
   return easy * 2 + medium * 3 + hard * 5;
 };
 
-// ⭐ Skeleton components
+
 const SkeletonPodium = () => (
   <div className="flex-1 max-w-[33%] flex flex-col items-center animate-pulse">
     <div className="rounded-2xl bg-white/10 w-20 h-20 sm:w-28 sm:h-28" />
@@ -49,9 +49,9 @@ const SkeletonPodium = () => (
 );
 
 const SkeletonRow = () => (
-  <div className="grid grid-cols-10 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
+  <div className="grid grid-cols-8 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
     <div className="col-span-1 h-4 bg-white/10 rounded"></div>
-    <div className="col-span-4 flex items-center gap-3">
+    <div className="col-span-2 flex items-center gap-3">
       <div className="w-9 h-9 rounded-full bg-white/10"></div>
       <div className="w-24 h-4 bg-white/10 rounded"></div>
     </div>
@@ -222,18 +222,14 @@ export default function LeaderboardPage() {
 
         </div>
 
-        <div
-          ref={tableRef}
-          className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-2xl overflow-x-auto hide-scrollbar"
-        >
 
-          <div className="relative group mb-2">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name or roll number..."
-              className="
+        <div className="relative group mb-2">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or roll number..."
+            className="
                     w-full px-4 py-3 rounded-t-xl 
                     bg-[#0e111a] border border-white/10 
                     text-gray-200 placeholder-gray-500
@@ -247,22 +243,25 @@ export default function LeaderboardPage() {
                     focus:ring-blue-500/20
                     transition-all duration-200
                     "
-            />
+          />
 
-            <div className="
+          <div className="
                   absolute right-4 top-1/2 -translate-y-1/2 
                   text-gray-400 
                   group-focus-within:text-blue-400 
                   transition
                 ">
-              🔍
-            </div>
+            🔍
           </div>
-
+        </div>
+        <div
+          ref={tableRef}
+          className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-b-2xl overflow-x-auto hide-scrollbar"
+        >
           <div className="min-w-[600px]">
-            <div className="grid grid-cols-10 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
+            <div className="grid grid-cols-8 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
               <div className="col-span-1">Rank</div>
-              <div className="col-span-4">User name</div>
+              <div className="col-span-2">User name</div>
               <div className="col-span-2 text-right">Points</div>
               <div className="col-span-1 text-right">Easy</div>
               <div className="col-span-1 text-right">Medium</div>
@@ -281,13 +280,13 @@ export default function LeaderboardPage() {
                 {paginated.map((user, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-10 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
+                    className="grid grid-cols-8 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
                   >
                     <div className="col-span-1 font-bold text-gray-400">
                       {page * ITEMS_PER_PAGE + index + 4}
                     </div>
 
-                    <div className="col-span-4 flex items-center gap-3">
+                    <div className="col-span-2 flex items-center gap-3">
                       <img
                         src={avatarImages[user.avatar % avatarImages.length]}
                         className="w-9 h-9 rounded-full object-cover ring-2 ring-transparent group-hover:ring-blue-500/50 transition"
