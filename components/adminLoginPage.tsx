@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
 
     if (checking) {
         return (
-            <section className="min-h-screen flex items-center justify-center bg-black text-white">
+            <section className="min-h-screen flex items-center justify-center text-white">
                 <p className="text-gray-400 text-sm">Checking admin status...</p>
             </section>
         );
@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center text-white">
-            <div className="bg-[#111] border border-gray-700 rounded-lg">
+            <div className="bg-[#111] p-10 border border-gray-700 rounded-lg">
                 <h2 className="text-2xl mb-4 font-bold">Admin Login</h2>
                 <button
                     onClick={handleAdminLogin}

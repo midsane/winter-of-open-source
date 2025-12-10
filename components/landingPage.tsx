@@ -58,7 +58,7 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
             href={primaryButtonHref}
           >
             <div
-              className="inline-flex items-center justify-center px-8 py-3 bg-blue-600 hover:bg-blue-700
+              className="inline-flex min-w-56 items-center justify-center px-8 py-3 bg-blue-600 hover:bg-blue-700
              text-white font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-base sm:text-lg"
             >
               {primaryButtonText}
@@ -68,7 +68,7 @@ export const LandingPageContent = (props: LandingPageContentProps) => {
 
           <Link href={secondaryButtonHref}>
             <div
-              className="inline-flex items-center justify-center px-8 py-3 border border-gray-600 text-gray-300 hover:text-white hover:border-white rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-base sm:text-lg"
+              className="inline-flex min-w-56 items-center justify-center px-8 py-3 border border-gray-600 text-gray-300 hover:text-white hover:border-white rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-base sm:text-lg"
             >
               {secondaryButtonText}
             </div>

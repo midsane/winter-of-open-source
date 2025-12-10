@@ -118,7 +118,7 @@ export function RegisterPage() {
 
     return (
         <div className="min-h-[calc(100vh-80px)] flex items-center justify-center py-8 font-sans">
-            <div className="w-full max-w-2xl bg-[#121218] border border-blue-900/50 rounded-xl shadow-2xl p-6 sm:p-10">
+            <div className="w-full  max-w-[90%] sm:max-w-2xl bg-[#121218] border border-blue-900/50 rounded-xl shadow-2xl p-6 sm:p-10">
                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 text-center">
                     CodeIIEST Registration
                 </h2>

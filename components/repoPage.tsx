@@ -72,7 +72,7 @@ const statusColors: Record<string, string> = {
 
 export const RepoPage = () => {
   return (
-    <div className="w-full min-h-screen xl:max-w-[1280px]  mx-auto bg-[#0f0f0f] text-neutral-200 p-8">
+    <div className="w-full min-h-screen xl:max-w-[1280px]  mx-auto  text-neutral-200 p-8">
       <h1 className="text-3xl font-semibold mb-8 text-neutral-100">
         Repository Dashboard
       </h1>
@@ -119,31 +119,7 @@ export const RepoPage = () => {
                 {repo.maintainerDiscordId || "Not provided"}
               </div>
 
-              {/* Status */}
-              <div className="mt-4">
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="font-medium text-neutral-300">Readme:</span>
-                  <span className={repo.readmeSetupDone ? "text-green-400" : "text-red-400"}>
-                    {repo.readmeSetupDone ? "Yes" : "No"}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="font-medium text-neutral-300">Contrib:</span>
-                  <span className={repo.contributionSetupDone ? "text-green-400" : "text-red-400"}>
-                    {repo.contributionSetupDone ? "Yes" : "No"}
-                  </span>
-                </div>
-
-                <div className="mt-3">
-                  <span className="font-medium text-sm text-neutral-300">Issues:</span>
-                  <span
-                    className={`ml-2 px-2 py-1 text-xs rounded-lg ${statusColors[repo.issuesCreated]}`}
-                  >
-                    {repo.issuesCreated}
-                  </span>
-                </div>
-              </div>
+              
 
             </div>
           </div>
