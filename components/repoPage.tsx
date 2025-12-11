@@ -20,6 +20,13 @@ const repoData = [
     contributionSetupDone: true,
     issuesCreated: "Done"
   },
+    {
+    repoLink: "https://github.com/datavorous/boids",
+    maintainerName: "Sagnik Bhattacharjee",
+    repoDescription: "Boids Simulation (Web Based)",
+    repoTags: ["Creative Coding"],
+    maintainerDiscordId: "datavorous_",
+  },
    {
     repoLink: "https://github.com/Legendav007/AlgoForge",
     maintainerName: "Abhinav Verma",
