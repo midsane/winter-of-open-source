@@ -49,13 +49,13 @@ const SkeletonPodium = () => (
 );
 
 const SkeletonRow = () => (
-  <div className="grid grid-cols-8 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
+  <div className="grid grid-cols-7 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
     <div className="col-span-1 h-4 bg-white/10 rounded"></div>
     <div className="col-span-2 flex items-center gap-3">
       <div className="w-9 h-9 rounded-full bg-white/10"></div>
       <div className="w-24 h-4 bg-white/10 rounded"></div>
     </div>
-    <div className="col-span-2 h-4 bg-white/10 rounded"></div>
+    <div className="col-span-1 h-4 bg-white/10 rounded"></div>
     <div className="col-span-1 h-4 bg-white/10 rounded"></div>
     <div className="col-span-1 h-4 bg-white/10 rounded"></div>
     <div className="col-span-1 h-4 bg-white/10 rounded"></div>
@@ -233,7 +233,7 @@ export default function LeaderboardPage() {
                     w-full px-4 py-3 rounded-t-xl 
                     bg-[#0e111a] border border-white/10 
                     text-gray-200 placeholder-gray-500
-
+                    max-w-5xl
                     shadow-[0_0_15px_-3px_rgba(0,0,0,0.4)]
                     backdrop-blur-xl
 
@@ -249,20 +249,20 @@ export default function LeaderboardPage() {
                   absolute right-4 top-1/2 -translate-y-1/2 
                   text-gray-400 
                   group-focus-within:text-blue-400 
-                  transition
+                  transition 
                 ">
             🔍
           </div>
         </div>
         <div
           ref={tableRef}
-          className="bg-[#12141e]/50 backdrop-blur-md border border-white/5 rounded-b-2xl overflow-x-auto hide-scrollbar"
+          className="bg-[#12141e]/50 backdrop-blur-md border max-w-5xl border-white/5 rounded-b-2xl overflow-x-auto hide-scrollbar"
         >
           <div className="min-w-[600px]">
-            <div className="grid grid-cols-8 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
+            <div className="grid grid-cols-7 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
               <div className="col-span-1">Rank</div>
               <div className="col-span-2">User name</div>
-              <div className="col-span-2 text-right">Points</div>
+              <div className="col-span-1 text-right">Points</div>
               <div className="col-span-1 text-right">Easy</div>
               <div className="col-span-1 text-right">Medium</div>
               <div className="col-span-1 text-right">Hard</div>
@@ -280,7 +280,7 @@ export default function LeaderboardPage() {
                 {paginated.map((user, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-8 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
+                    className="grid grid-cols-7 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
                   >
                     <div className="col-span-1 font-bold text-gray-400">
                       {page * ITEMS_PER_PAGE + index + 4}
@@ -297,7 +297,7 @@ export default function LeaderboardPage() {
                       </div>
                     </div>
 
-                    <div className="col-span-2 flex justify-end">
+                    <div className="col-span-1 flex justify-end">
                       <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-1 rounded text-blue-400 text-xs font-bold border border-blue-500/20">
                         💎 {user.points}
                       </div>
