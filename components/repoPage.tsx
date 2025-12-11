@@ -20,6 +20,13 @@ const repoData = [
     contributionSetupDone: true,
     issuesCreated: "Done"
   },
+   {
+    repoLink: "https://github.com/Legendav007/AlgoForge",
+    maintainerName: "Abhinav Verma",
+    repoDescription: "Collection of clean and well-explained algorithms.",
+    repoTags: ["Algorithms"],
+    maintainerDiscordId: null,
+  },
   {
     repoLink: "https://github.com/saral-gupta7/dodge-objects",
     maintainerName: "Saral Gupta",
