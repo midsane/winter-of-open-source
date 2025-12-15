@@ -79,6 +79,7 @@ export function RegisterPage() {
                             easy: 0,
                             medium: 0,
                             hard: 0,
+                            bonus: 0
                         });
                     } catch (e) {
                     

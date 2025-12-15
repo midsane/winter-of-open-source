@@ -20,6 +20,7 @@ type UserData = {
     easy: number;
     medium: number;
     hard: number;
+    bonus: number
 };
 
 export function AdminPage() {
@@ -169,7 +170,7 @@ export function AdminPage() {
                             </div>
 
                             <div className="mt-4 grid grid-cols-3 gap-3">
-                                {["easy", "medium", "hard"].map((field) => (
+                                {["easy", "medium", "hard", "bonus"].map((field) => (
                                     <div key={field}>
                                         <label className="text-sm capitalize">{field}</label>
                                         <input
@@ -197,6 +198,7 @@ export function AdminPage() {
                                         easy: u.easy,
                                         medium: u.medium,
                                         hard: u.hard,
+                                        bonus: u.bonus
                                     })
                                 }
                                 className="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold"

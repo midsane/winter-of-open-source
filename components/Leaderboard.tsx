@@ -30,13 +30,14 @@ export type UserData = {
   easy: number;
   medium: number;
   hard: number;
+  bonus: number;
   roll?: string;
   points: number;
   uid?: string;
 };
 
-const getPoints = (easy: number, medium: number, hard: number) => {
-  return easy * 2 + medium * 3 + hard * 5;
+const getPoints = (easy: number, medium: number, hard: number, bonus: number) => {
+  return easy * 2 + medium * 3 + hard * 5 + bonus;
 };
 
 
@@ -49,7 +50,7 @@ const SkeletonPodium = () => (
 );
 
 const SkeletonRow = () => (
-  <div className="grid grid-cols-7 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
+  <div className="grid grid-8 gap-4 px-6 py-5 border-b border-white/5 animate-pulse">
     <div className="col-span-1 h-4 bg-white/10 rounded"></div>
     <div className="col-span-2 flex items-center gap-3">
       <div className="w-9 h-9 rounded-full bg-white/10"></div>
@@ -82,7 +83,8 @@ export default function LeaderboardPage() {
           medium: d.medium,
           hard: d.hard,
           roll: d.roll,
-          points: getPoints(d.easy, d.medium, d.hard),
+          bonus: d.bonus | 0,
+          points: getPoints(d.easy, d.medium, d.hard, d.bonus | 0),
         });
       });
 
@@ -259,13 +261,14 @@ export default function LeaderboardPage() {
           className="bg-[#12141e]/50 backdrop-blur-md border max-w-5xl border-white/5 rounded-b-2xl overflow-x-auto hide-scrollbar"
         >
           <div className="min-w-[600px]">
-            <div className="grid grid-cols-7 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
+            <div className="grid grid-cols-8 gap-4 px-6 py-4 border-b border-white/5 text-xs text-gray-500 font-medium uppercase tracking-wider">
               <div className="col-span-1">Rank</div>
               <div className="col-span-2">User name</div>
               <div className="col-span-1 text-right">Points</div>
               <div className="col-span-1 text-right">Easy</div>
               <div className="col-span-1 text-right">Medium</div>
               <div className="col-span-1 text-right">Hard</div>
+              <div className="col-span-1 text-right">Bonus</div>
             </div>
 
 
@@ -280,7 +283,7 @@ export default function LeaderboardPage() {
                 {paginated.map((user, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-7 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
+                    className="grid grid-cols-8 gap-4 px-6 py-5 border-b border-white/5 hover:bg-white/5 transition items-center text-sm group"
                   >
                     <div className="col-span-1 font-bold text-gray-400">
                       {page * ITEMS_PER_PAGE + index + 4}
@@ -306,6 +309,7 @@ export default function LeaderboardPage() {
                     <div className="col-span-1 text-right text-gray-300 font-mono">{user.easy}</div>
                     <div className="col-span-1 text-right font-bold text-white font-mono">{user.medium}</div>
                     <div className="col-span-1 text-right font-bold text-white font-mono">{user.hard}</div>
+                    <div className="col-span-1 text-right font-bold text-white font-mono">{user.bonus | 0}</div>
                   </div>
                 ))}
                 {paginated?.length === 0 &&
