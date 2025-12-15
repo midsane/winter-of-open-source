@@ -37,7 +37,7 @@ export type UserData = {
 };
 
 const getPoints = (easy: number, medium: number, hard: number, bonus: number) => {
-  return easy * 2 + medium * 3 + hard * 5 + bonus;
+  return easy * 10 + medium * 20 + hard * 40 + bonus;
 };
 
 
@@ -84,7 +84,7 @@ export default function LeaderboardPage() {
           hard: d.hard,
           roll: d.roll,
           bonus: d.bonus | 0,
-          points: getPoints(d.easy, d.medium, d.hard, d.bonus | 0),
+          points: getPoints(d.easy, d.medium, d.hard, d.bonus || 0),
         });
       });
 
@@ -309,7 +309,7 @@ export default function LeaderboardPage() {
                     <div className="col-span-1 text-right text-gray-300 font-mono">{user.easy}</div>
                     <div className="col-span-1 text-right font-bold text-white font-mono">{user.medium}</div>
                     <div className="col-span-1 text-right font-bold text-white font-mono">{user.hard}</div>
-                    <div className="col-span-1 text-right font-bold text-white font-mono">{user.bonus | 0}</div>
+                    <div className="col-span-1 text-right font-bold text-white font-mono">{user.bonus || 0}</div>
                   </div>
                 ))}
                 {paginated?.length === 0 &&

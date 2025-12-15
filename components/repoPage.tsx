@@ -73,6 +73,13 @@ const repoData = [
     readmeSetupDone: true,
     contributionSetupDone: true,
     issuesCreated: "Not started"
+  },
+  {
+    repoLink: "https://github.com/AitijhyaModak/chat-app",
+    maintainerName: "Aitijhya Modak",
+    repoDescription: "Chat App",
+    repoTags: ["Prisma", "Next.js", "React"],
+    maintainerDiscordId: "aitij_26452",
   }
 ];
 
@@ -132,8 +139,6 @@ export const RepoPage = () => {
                 <span className="font-medium text-neutral-300">Discord:</span>{" "}
                 {repo.maintainerDiscordId || "Not provided"}
               </div>
-
-              
 
             </div>
           </div>
