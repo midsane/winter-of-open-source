@@ -63,6 +63,15 @@ const SkeletonRow = () => (
   </div>
 );
 
+function getYearTxt(roll: string){
+  const passing = roll.substring(0, 4);
+  if(passing === "2022") return "4th year";
+  else if(passing == "2023") return "3rd year";
+  else if(passing == "2024") return "2nd year";
+  else if(passing == "2025") return "1st year";
+  return ""
+}
+
 export default function LeaderboardPage() {
   const [dynamicData, setDynamicData] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -146,17 +155,19 @@ export default function LeaderboardPage() {
           <h3 className="mt-3 text-xs sm:text-lg font-bold text-white tracking-wide text-center truncate w-full px-2">
             {user.name}
           </h3>
+            <h6 className="text-xs sm:text-xs font-bold text-white/70 tracking-wide text-center truncate w-full px-2">
+            {getYearTxt(user.roll || "")}
+          </h6>
         </div>
 
-        {/* Trophy + Points Box */}
         <div
           className={`w-full ${boxHeight} rounded-t-2xl border-t-2 border-x border-white/5 ${borderColor}
          bg-gradient-to-b from-[#1d2648] via-[#101426] to-transparent ${glow}
          flex flex-col items-center justify-start py-6 sm:py-8 gap-1 sm:gap-3 backdrop-blur-sm`}
         >
           <div className="bg-white/10 p-2 relative rounded-lg mb-1">
-            <Trophy size={isFirst ? 60 : 48} className="text-yellow-400" />
-            <span className="absolute text-sm sm:text-lg top-5 sm:top-4 left-1/2 -translate-x-1/2">{rank}</span>
+            <Trophy fill="yellow" size={isFirst ? 60 : 48} className="text-red-900" />
+            <span className={`absolute text-red-900 text-sm sm:text-lg  ${isFirst ? "sm:top-4 top-5" : "sm:top-3 top-4"} left-1/2 -translate-x-1/2`}>{rank}</span>
           </div>
 
           <div className="flex flex-col items-center mt-2">
@@ -167,7 +178,6 @@ export default function LeaderboardPage() {
             <span className="text-[10px] sm:text-sm text-gray-400 mt-1">Points</span>
           </div>
 
-          {/* Solved Breakdown */}
           <div className="flex flex-col gap-2 items-center">
             <div className="flex items-center mt-2">
               <span className="text-green-600">{user.easy}</span> +
