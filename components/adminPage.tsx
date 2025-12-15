@@ -172,13 +172,13 @@ export function AdminPage() {
                             <div className="mt-4 grid grid-cols-3 gap-3">
                                 {["easy", "medium", "hard", "bonus"].map((field) => (
                                     <div key={field}>
-                                        <label className="text-sm capitalize">{field || 0}</label>
+                                        <label className="text-sm capitalize">{field}</label>
                                         <input
                                             type="number"
                                             className="w-full px-2 py-1 rounded bg-[#222] border border-gray-600"
-                                            value={u[field as keyof UserData] as number}
+                                            value={u[field as keyof UserData] || 0 as number}
                                             onChange={(e) => {
-                                                const v = Number(e.target.value);
+                                                const v = Number(e.target.value) || 0;
                                                 setUsers((prev) =>
                                                     prev.map((x) =>
                                                         x.uid === u.uid
