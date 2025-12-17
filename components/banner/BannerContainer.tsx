@@ -1,6 +1,6 @@
 "use client";
 import { CSSProperties, ReactNode } from 'react'
-
+import Snowfall from 'react-snowfall'
 type Props = {
   backgroundImage?: string
   children: ReactNode
@@ -33,12 +33,9 @@ export function BannerContainer({ backgroundImage, children }: Props) {
       >
         <div className="absolute inset-0 bg-primary/50 dark:bg-sidebar/60" />
 
-        {!backgroundImage && (
-          <>
-            <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-60 h-60 bg-purple-500/30 blur-3xl rounded-full" />
-            <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-60 h-60 bg-blue-500/30 blur-3xl rounded-full" />
-          </>
-        )}
+        <Snowfall 
+        speed={[1.0, 2.0]}
+        />
 
         <div className="relative z-10">{children}</div>
       </div>

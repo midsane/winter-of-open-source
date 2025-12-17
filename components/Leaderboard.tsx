@@ -166,8 +166,8 @@ export default function LeaderboardPage() {
          flex flex-col items-center justify-start py-6 sm:py-8 gap-1 sm:gap-3 backdrop-blur-sm`}
         >
           <div className="bg-white/10 p-2 relative rounded-lg mb-1">
-            <Trophy fill="yellow" size={isFirst ? 60 : 48} className="text-red-900" />
-            <span className={`absolute text-red-900 text-sm sm:text-lg  ${isFirst ? "sm:top-4 top-5" : "sm:top-3 top-4"} left-1/2 -translate-x-1/2`}>{rank}</span>
+            <Trophy  size={isFirst ? 60 : 48} className="text-yellow-400" />
+            <span className={`absolute text-yellow-400 text-sm sm:text-lg  ${isFirst ? "sm:top-4 top-5" : "sm:top-3 top-4"} left-1/2 -translate-x-1/2`}>{rank}</span>
           </div>
 
           <div className="flex flex-col items-center mt-2">
