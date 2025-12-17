@@ -34,7 +34,9 @@ export function BannerContainer({ backgroundImage, children }: Props) {
         <div className="absolute inset-0 bg-primary/50 dark:bg-sidebar/60" />
 
         <Snowfall 
-        speed={[1.0, 2.0]}
+        snowflakeCount={100}
+        radius={[0.5,2.5]}
+        speed={[0.8, 1.5]}
         />
 
         <div className="relative z-10">{children}</div>
