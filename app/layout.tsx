@@ -43,7 +43,9 @@ export default function RootLayout({
         <Toaster theme="dark" richColors position="top-center" />
         <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-[#0c0c0d] via-[#121218] to-[#0d0e10] text-white">
           <Navbar />
-          {children}
+          <div className="w-full h-full mt-18">
+            {children}
+          </div>
           <Footer />
         </section>
         <script

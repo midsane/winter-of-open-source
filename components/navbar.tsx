@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { avatarImages } from "./Leaderboard";
-import { X, Check } from "lucide-react";
+import { X, Check, Menu } from "lucide-react";
 import { useSyncUser } from "@/hooks/useSyncUser";
 import { db } from "@/lib/firebase/client";
 import { doc, updateDoc } from "firebase/firestore";
@@ -13,8 +13,18 @@ import { toast } from "sonner";
 import logoImage from "@/public/images/favicon.png"
 import Image from "next/image";
 
+import clsx from 'clsx'
+
+const navLinks = [
+  { name: 'leaderboards', href: '/leaderboard' },
+  { name: 'repos', href: '/repos' },
+  { name: 'admin login', href: '/adminLogin' }
+]
+
+
 export const Navbar = () => {
   const router = useRouter();
+  const [open, setOpen] = useState(false)
   const { userData, loading, setUserData } = useSyncUser();
 
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
@@ -46,6 +56,7 @@ export const Navbar = () => {
 
   const handleRegister = () => {
     router.push("/register");
+    setOpen(false)
   };
 
   return (
@@ -80,11 +91,10 @@ export const Navbar = () => {
                   <button
                     key={idx}
                     onClick={() => setTempSelectedAvatar(idx)}
-                    className={`relative rounded-xl overflow-hidden aspect-square border transition-all ${
-                      active
-                        ? "border-blue-500 shadow-[0_0_10px_rgba(0,123,255,0.35)] scale-[1.05]"
-                        : "border-white/5 hover:border-white/20 opacity-80 hover:opacity-100"
-                    }`}
+                    className={`relative rounded-xl overflow-hidden aspect-square border transition-all ${active
+                      ? "border-blue-500 shadow-[0_0_10px_rgba(0,123,255,0.35)] scale-[1.05]"
+                      : "border-white/5 hover:border-white/20 opacity-80 hover:opacity-100"
+                      }`}
                   >
                     <img src={img} className="w-full h-full object-cover" />
                     {active && (
@@ -109,44 +119,103 @@ export const Navbar = () => {
         </div>
       )}
 
-      <nav className="relative z-20 flex items-center justify-between px-8 sm:px-6 py-5 max-w-7xl mx-auto">
-        <Link href="/" className="flex items-center gap-1 sm:gap-2">
-          <Image width={30} height={30} 
-          alt="codeiiest"  
-          src={logoImage} />
-          <p className="hidden sm:block sm:text-sm" >CodeIIEST</p>
-        </Link>
+      <header className="fixed top-0 left-0 z-50 w-full backdrop-blur-md border-b-1 border-blue-400">
+        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <Link href="/" className="flex items-center gap-1 sm:gap-2">
+              <Image width={30} height={30}
+                alt="codeiiest"
+                src={logoImage} />
+              <p className="hidden sm:block sm:text-sm" >CodeIIEST</p>
+            </Link>
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map(link => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-sm font-medium  text-white/80 hover:text-white transition"
+                >
+                  {link.name}
+                </Link>
+              ))}
 
-        <Link
-          href="/adminLogin"
-          className="text-sm text-gray-400 hover:text-white transition-colors px-3 py-1 rounded-md border border-transparent hover:border-gray-600"
-        >
-          Admin Login
-        </Link>
 
-        <div className="flex items-center gap-4">
-          {loading ? (
-            <AvatarSkeleton />
-          ) : !userData ? (
+              <div className="flex items-center gap-4">
+                {loading ? (
+                  <AvatarSkeleton />
+                ) : !userData ? (
+                  <button
+                    onClick={handleRegister}
+                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
+                  >
+                    Register
+                  </button>
+                ) : (
+                  <button
+                    onClick={openAvatarModal}
+                    className="group relative w-10 h-10 rounded-full bg-gray-800 border border-white/10 overflow-hidden hover:border-blue-500 transition"
+                  >
+                    <img
+                      src={avatarImages[userData.avatarIndex || 0]}
+                      className="w-full h-full object-cover group-hover:scale-110 transition"
+                    />
+                  </button>
+                )}
+              </div>
+            </div>
+
             <button
-              onClick={handleRegister}
-              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
+              aria-label="Toggle menu"
+              onClick={() => setOpen(prev => !prev)}
+              className="md:hidden rounded-lg p-2  transition"
             >
-              Register
+              {open ? <X size={22} /> : <Menu size={22} />}
             </button>
-          ) : (
-            <button
-              onClick={openAvatarModal}
-              className="group relative w-10 h-10 rounded-full bg-gray-800 border border-white/10 overflow-hidden hover:border-blue-500 transition"
-            >
-              <img
-                src={avatarImages[userData.avatarIndex || 0]}
-                className="w-full h-full object-cover group-hover:scale-110 transition"
-              />
-            </button>
-          )}
-        </div>
-      </nav>
+          </div>
+
+          <div
+            className={clsx(
+              'md:hidden overflow-hidden transition-all duration-300',
+              open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            )}
+          >
+            <div className="flex flex-col gap-4 py-4">
+              {navLinks.map(link => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="text-sm font-medium  text-white/80 hover:text-white transition"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="flex items-center gap-4">
+                {loading ? (
+                  <AvatarSkeleton />
+                ) : !userData ? (
+                  <button
+                    onClick={handleRegister}
+                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
+                  >
+                    Register
+                  </button>
+                ) : (
+                  <button
+                    onClick={openAvatarModal}
+                    className="group relative w-10 h-10 rounded-full bg-gray-800 border border-white/10 overflow-hidden hover:border-blue-500 transition"
+                  >
+                    <img
+                      src={avatarImages[userData.avatarIndex || 0]}
+                      className="w-full h-full object-cover group-hover:scale-110 transition"
+                    />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
     </>
   );
 };
@@ -154,3 +223,5 @@ export const Navbar = () => {
 const AvatarSkeleton = () => (
   <div className="w-10 h-10 rounded-full bg-white/10 animate-pulse" />
 );
+
+
