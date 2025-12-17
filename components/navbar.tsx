@@ -16,9 +16,9 @@ import Image from "next/image";
 import clsx from 'clsx'
 
 const navLinks = [
-  { name: 'leaderboards', href: '/leaderboard' },
-  { name: 'repos', href: '/repos' },
-  { name: 'admin login', href: '/adminLogin' }
+  { name: 'Leaderboard', href: '/leaderboard' },
+  { name: 'Repos', href: '/repos' },
+  { name: 'Admin Login', href: '/adminLogin' }
 ]
 
 
