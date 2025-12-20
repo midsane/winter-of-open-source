@@ -11,6 +11,13 @@ const repoData = [
     issuesCreated: "Work in progress"
   },
   {
+    repoLink: "https://github.com/rounakkumarsingh/loom",
+    maintainerName: "Rounak Kumar Singh",
+    repoDescription: "Static Site Generator",
+    repoTags: ["Parsers", "Compilers", "Regex", "Python", "AST", "Markdown"],
+    maintainerDiscordId: "quinovae",
+  },
+  {
     repoLink: "https://github.com/datavorous/tinytracer",
     maintainerName: "Sagnik Bhattacharjee",
     repoDescription: "A tiny path tracer",
@@ -20,14 +27,14 @@ const repoData = [
     contributionSetupDone: true,
     issuesCreated: "Done"
   },
-    {
+  {
     repoLink: "https://github.com/datavorous/boids",
     maintainerName: "Sagnik Bhattacharjee",
     repoDescription: "Boids Simulation (Web Based)",
     repoTags: ["Creative Coding"],
     maintainerDiscordId: "datavorous_",
   },
-   {
+  {
     repoLink: "https://github.com/Legendav007/AlgoForge",
     maintainerName: "Abhinav Verma",
     repoDescription: "Collection of clean and well-explained algorithms.",
@@ -108,7 +115,7 @@ export const RepoPage = () => {
           >
             <div className="flex flex-col gap-3">
 
-      
+
               <a
                 href={repo.repoLink}
                 target="_blank"
@@ -117,12 +124,12 @@ export const RepoPage = () => {
                 {repo.repoDescription}
               </a>
 
-      
+
               <p className="text-neutral-400 text-sm">
                 by {repo.maintainerName}
               </p>
 
-            
+
               <div className="flex flex-wrap gap-2 mt-2">
                 {repo.repoTags.map((tag, t) => (
                   <span
@@ -134,7 +141,7 @@ export const RepoPage = () => {
                 ))}
               </div>
 
-             
+
               <div className="text-sm mt-3">
                 <span className="font-medium text-neutral-300">Discord:</span>{" "}
                 {repo.maintainerDiscordId || "Not provided"}
