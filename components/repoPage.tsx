@@ -11,6 +11,13 @@ const repoData = [
     issuesCreated: "Work in progress"
   },
   {
+    repoLink: "https://github.com/sinpea/deebee/",
+    maintainerName: "Prayas Sinha",
+    repoDescription: "toml based data pipeline tool",
+    repoTags: ["data pipeline automation"],
+    maintainerDiscordId: "pygmalion_the_first",
+  },
+  {
     repoLink: "https://github.com/rounakkumarsingh/loom",
     maintainerName: "Rounak Kumar Singh",
     repoDescription: "Static Site Generator",
